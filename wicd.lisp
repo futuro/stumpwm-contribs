@@ -92,8 +92,12 @@
               "")
           essid "^]"))
 
+(defun wicd-wired-p ()
+  (if (string/= (wicd-wired-command "GetWiredIP" '((:int32) 0)) "")
+      t))
+
 (defun get-wicd-current-essid ()
-  (if (wicd-wired-command "GetWiredIP" '((:int32) 0))
+  (if (wicd-wired-p)
       *wicd-wired-network-name*
       (wicd-wireless-command "GetCurrentNetwork" '((:int32) 0))))
 
