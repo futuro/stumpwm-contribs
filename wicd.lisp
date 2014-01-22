@@ -128,7 +128,11 @@
                   (wicd-wired-command "CheckWiredConnectingMessage"))
                  (t (let ((status-info (cadr (wicd-general-command "GetConnectionStatus"))))
                       (unless (string= "" (car status-info))
-                        (format nil "~A ~3@A%" (cadr status-info) (caddr status-info))))))
+                        (format nil "~A ~3@A%"
+				(wicd-decorate-essid (get-wicd-current-essid) t)
+				(if (wicd-wired-p)
+				    "100"
+				    (wicd-wireless-command "GetCurrentSignalStrength" '((:int32) 0))))))))
              (dbus:method-error (condition)
                (message "~A~%If this persists, check the status of wicd." condition)))
            "None")))
