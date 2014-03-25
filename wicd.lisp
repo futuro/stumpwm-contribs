@@ -93,8 +93,11 @@
           essid "^]"))
 
 (defun wicd-wired-p ()
-  (if (string/= (wicd-wired-command "GetWiredIP" '((:int32) 0)) "")
-      t))
+  (let ((wired-ip (wicd-wired-command "GetWiredIP" '((:int32) 0))))
+    (and
+     wired-ip
+     (string/= wired-ip "")) ; I vaguely remember something about wicd returning the empty string before...
+    ))
 
 (defun get-wicd-current-essid ()
   (if (wicd-wired-p)
